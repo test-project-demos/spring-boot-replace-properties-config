@@ -5,7 +5,6 @@ import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEven
 import org.springframework.boot.context.logging.LoggingApplicationListener;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
@@ -19,8 +18,8 @@ import java.util.Objects;
  */
 @Slf4j
 @Configuration
-//@Order(LoggingApplicationListener.DEFAULT_ORDER - 1)
-@Order(Ordered.HIGHEST_PRECEDENCE)
+@Order(LoggingApplicationListener.DEFAULT_ORDER - 1)
+//@Order(Ordered.HIGHEST_PRECEDENCE)
 public class EnvironmentPreparedEventListener4LogConfig implements ApplicationListener<ApplicationEnvironmentPreparedEvent> {
     @Override
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
@@ -28,7 +27,8 @@ public class EnvironmentPreparedEventListener4LogConfig implements ApplicationLi
         String originConfigProperty = environment.getProperty(LoggingApplicationListener.CONFIG_PROPERTY);
 
         if (Objects.equals(originConfigProperty, "log4j.properties")) {
-            String newConfigProperty = "classpath:logback-spring.xml";
+            //String newConfigProperty = "classpath:logback-spring.xml";
+            String newConfigProperty = "";
             environment.getPropertySources().addFirst(new MapPropertySource("modify log config",
                 Collections.singletonMap(LoggingApplicationListener.CONFIG_PROPERTY, newConfigProperty)));
 
